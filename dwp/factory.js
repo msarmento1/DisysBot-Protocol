@@ -9,6 +9,8 @@ const resource_response = require( './pdu/resource_response' );
 const simulation_request = require( './pdu/simulation_request' );
 const simulation_response = require( './pdu/simulation_response' );
 const simulation_terminate_request = require( './pdu/simulation_terminate_request' );
+const information_request = require( './pdu/information_request' );
+const information_response = require( './pdu/information_response' );
 
 const Id = {
    ResourceRequest: 0,
@@ -16,6 +18,9 @@ const Id = {
    SimulationRequest: 2,
    SimulationResponse: 3,
    SimulationTerminateRequest: 4,
+   InformationRequest: 5,
+   InformationResponse: 6,
+   ControlCommand: 7,
 }
 
 module.exports.Id = Id;
@@ -46,6 +51,14 @@ module.exports.validate = function ( object ) {
 
       case Id.SimulationTerminateRequest:
          simulation_terminate_request.validate( object );
+         break;
+
+      case Id.InformationRequest:
+         information_request.validate( object );
+         break;
+
+      case Id.InformationResponse:
+         information_response.validate( object );
          break;
 
       default:
