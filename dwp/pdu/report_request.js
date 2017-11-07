@@ -15,7 +15,7 @@ var format = function format( data ) {
 
    validate( data );
 
-   var object = extend( {}, { Id: factory.Id.InformationResponse } );
+   var object = extend( {}, { Id: factory.Id.ReportRequest } );
    object = extend( object, data );
 
    var packet = JSON.stringify( object );
