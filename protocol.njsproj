@@ -36,8 +36,8 @@
     <Compile Include="dwp\pdu\control_command.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="dwp\pdu\information_request.js" />
-    <Compile Include="dwp\pdu\information_response.js" />
+    <Compile Include="dwp\pdu\report_request.js" />
+    <Compile Include="dwp\pdu\report_response.js" />
     <Compile Include="dwp\pdu\resource_request.js" />
     <Compile Include="dwp\pdu\resource_response.js" />
     <Compile Include="dwp\pdu\simulation_request.js" />

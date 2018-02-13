@@ -4,8 +4,8 @@
 //
 ////////////////////////////////////////////////
 
-const factory = require( '../factory' )
-const extend = require( 'util' )._extend
+const factory = require( '../factory' );
+const extend = require( 'util' )._extend;
 
 var validate = function validate( object ) {
 

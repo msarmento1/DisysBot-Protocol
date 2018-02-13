@@ -4,13 +4,15 @@
 //
 ////////////////////////////////////////////////
 
+const report_response = require( './pdu/report_response' );
+
 const resource_request = require( './pdu/resource_request' );
 const resource_response = require( './pdu/resource_response' );
 const simulation_request = require( './pdu/simulation_request' );
 const simulation_response = require( './pdu/simulation_response' );
 const simulation_terminate_request = require( './pdu/simulation_terminate_request' );
 const report_request = require( './pdu/report_request' );
-const report_response = require( './pdu/report_response' );
+const control_command = require( './pdu/control_command' );
 
 const Id = {
    ResourceRequest: 0,
@@ -59,6 +61,10 @@ module.exports.validate = function ( object ) {
 
       case Id.ReportResponse:
          report_response.validate( object );
+         break;
+
+      case Id.ControlCommand:
+         control_command.validate( object );
          break;
 
       default:
