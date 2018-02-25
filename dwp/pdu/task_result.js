@@ -51,5 +51,5 @@ var format = function format(data) {
 module.exports = {
   validate: validate,
   format: format,
-  ResultCode: ResultCode
+  ReturnCode: ReturnCode
 }

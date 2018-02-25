@@ -16,8 +16,16 @@ var validate = function validate (data) {
     throw Object({ error: 'validation error', reason: 'taskId field is undefined' })
   }
 
-  if (data.command === undefined) {
-    throw Object({ error: 'validation error', reason: 'command field is undefined' })
+  if (data.exec === undefined) {
+    throw Object({ error: 'validation error', reason: 'exec field is undefined' })
+  }
+
+  if (data.exec.file === undefined) {
+    throw Object({ error: 'validation error', reason: 'exec.file field is undefined' })
+  }
+
+  if (data.exec.arguments === undefined) {
+    throw Object({ error: 'validation error', reason: 'exec.arguments field is undefined' })
   }
 
   if (data.files === undefined) {

@@ -12,6 +12,7 @@ const taskResult = require('./pdu/task_result')
 const terminateTask = require('./pdu/terminate_task')
 const terminateTaskResponse = require('./pdu/terminate_task_response')
 const performCommand = require('./pdu/perform_command')
+const extend = require('util')._extend
 
 const Id = {
   GET_REPORT: 0,
@@ -28,7 +29,7 @@ module.exports.Id = Id
 
 module.exports.validate = function (pdu) {
   if (pdu.header.id === undefined) {
-    throw Object({ error: 'validation error', reason: 'pdu id is undefined' }))
+    throw Object({ error: 'validation error', reason: 'pdu id is undefined' })
   }
 
   switch (pdu.header.id) {
@@ -73,8 +74,12 @@ const beginTag = '/BEGIN/'
 const endTag = '/END/'
 
 module.exports.encapsulate = function (packet, id) {
-  packet.header.id = id
-  packet.header.date = new Date()
+  packet = JSON.stringify(extend(JSON.parse(packet), {
+    header: {
+      id: id,
+      date: new Date()
+    }
+  }))
 
   return beginTag + packet + endTag
 }
