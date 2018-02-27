@@ -7,6 +7,12 @@
 const factory = require('../factory')
 const extend = require('util')._extend
 
+const Command = {
+  RESUME: 0,
+  PAUSE: 1,
+  STOP: 2
+}
+
 var validate = function validate (data) {
   if (data === undefined) {
     throw Object({ error: 'validation error', reason: 'no data was set' })
@@ -33,5 +39,6 @@ var format = function format (data) {
 
 module.exports = {
   validate: validate,
-  format: format
+  format: format,
+  Command: Command
 }

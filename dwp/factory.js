@@ -14,6 +14,9 @@ const terminateTaskResponse = require('./pdu/terminate_task_response')
 const performCommand = require('./pdu/perform_command')
 const extend = require('util')._extend
 
+// Protocol Version
+const VERSION = "1.0"
+
 const Id = {
   GET_REPORT: 0,
   REPORT: 1,
@@ -33,36 +36,36 @@ module.exports.validate = function (pdu) {
   }
 
   switch (pdu.header.id) {
-    case Id.GETREPORT:
+    case Id.GET_REPORT:
       getReport.validate(pdu)
       break
 
     case Id.REPORT:
-      report.validate()
+      report.validate(pdu)
       break
 
     case Id.PERFORM_TASK:
-      performTask.validate()
+      performTask.validate(pdu)
       break
 
     case Id.PERFORM_TASK_RESPONSE:
-      performTaskResponse.validate()
+      performTaskResponse.validate(pdu)
       break
 
     case Id.TASK_RESULT:
-      taskResult.validate()
+      taskResult.validate(pdu)
       break
 
     case Id.TERMINATE_TASK:
-      terminateTask.validate()
+      terminateTask.validate(pdu)
       break
 
     case Id.TERMINATE_TASK_RESPONSE:
-      terminateTaskResponse.validate()
+      terminateTaskResponse.validate(pdu)
       break
 
     case Id.PERFORM_COMMAND:
-      performCommand.validate()
+      performCommand.validate(pdu)
       break
 
     default:
@@ -70,53 +73,54 @@ module.exports.validate = function (pdu) {
   }
 }
 
-const beginTag = '/BEGIN/'
-const endTag = '/END/'
+const BEGIN_TAG = '/BEGIN/'
+const END_TAG = '/END/'
 
 module.exports.encapsulate = function (packet, id) {
   packet = JSON.stringify(extend(JSON.parse(packet), {
     header: {
       id: id,
-      date: new Date()
+      date: new Date(),
+      version: VERSION
     }
   }))
 
-  return beginTag + packet + endTag
+  return BEGIN_TAG + packet + END_TAG
 }
 
 module.exports.expose = function (packet) {
   var response = {}
 
-  var beginIndex = packet.search(beginTag)
+  var beginIndex = packet.search(BEGIN_TAG)
 
   if (beginIndex === -1) {
     throw Object({ error: 'expose error', reason: 'begin tag was not found' })
   }
 
-  var endIndex = packet.search(endTag, beginIndex)
+  var endIndex = packet.search(END_TAG, beginIndex)
 
   if (endIndex === -1) {
     throw Object({ error: 'expose error', reason: 'end tag was not found' })
   }
 
-  return packet.substring(beginIndex + beginTag.length, endIndex)
+  return packet.substring(beginIndex + BEGIN_TAG.length, endIndex)
 }
 
 /*
-   Removes first occurrence of DWP packet
+ * Removes first occurrence of DWP packet
 */
 module.exports.remove = function (packet) {
-  var beginIndex = packet.search(beginTag)
+  var beginIndex = packet.search(BEGIN_TAG)
 
   if (beginIndex === -1) {
     throw Object({ error: 'remove error', reason: 'begin tag was not found' })
   }
 
-  var endIndex = packet.search(endTag, beginIndex)
+  var endIndex = packet.search(END_TAG, beginIndex)
 
   if (endIndex === -1) {
     throw Object({ error: 'remove error', reason: 'end tag was not found' })
   }
 
-  return packet.replace(packet.substring(beginIndex, endIndex + endTag.length), '')
+  return packet.replace(packet.substring(beginIndex, endIndex + END_TAG.length), '')
 }

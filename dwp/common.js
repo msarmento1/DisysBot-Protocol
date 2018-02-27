@@ -8,7 +8,7 @@ const Flags = {
   RESOURCE: 0x01,
   TASKS: 0x02,
   STATE: 0x04,
-  ALIAS: 0x08, 
+  ALIAS: 0x08
 }
 
 const TerminateTaskCode = {

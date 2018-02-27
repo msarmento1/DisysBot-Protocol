@@ -42,12 +42,6 @@ var validate = function validate (data) {
       throw Object({ error: 'validation error', reason: 'tasks is undefined' })
     }
   }
-
-  if (data.flags & Flags.ALIAS) {
-    if (data.alias === undefined) {
-      throw Object({ error: 'validation error', reason: 'alias is undefined' })
-    }
-  }
 }
 
 var format = function format (data) {
