@@ -1,119 +1,126 @@
-////////////////////////////////////////////////
+/// /////////////////////////////////////////////
 //
 // Copyright (c) 2017 Matheus Medeiros Sarmento
 //
-////////////////////////////////////////////////
+/// /////////////////////////////////////////////
 
-const report_response = require( './pdu/report_response' );
+const getReport = require('./pdu/get_report')
+const report = require('./pdu/report')
+const performTask = require('./pdu/perform_task')
+const performTaskResponse = require('./pdu/perform_task_response')
+const taskResult = require('./pdu/task_result')
+const terminateTask = require('./pdu/terminate_task')
+const terminateTaskResponse = require('./pdu/terminate_task_response')
+const performCommand = require('./pdu/perform_command')
+const extend = require('util')._extend
 
-const resource_request = require( './pdu/resource_request' );
-const resource_response = require( './pdu/resource_response' );
-const simulation_request = require( './pdu/simulation_request' );
-const simulation_response = require( './pdu/simulation_response' );
-const simulation_terminate_request = require( './pdu/simulation_terminate_request' );
-const report_request = require( './pdu/report_request' );
-const control_command = require( './pdu/control_command' );
+// Protocol Version
+const VERSION = "1.0"
 
 const Id = {
-   ResourceRequest: 0,
-   ResourceResponse: 1,
-   SimulationRequest: 2,
-   SimulationResponse: 3,
-   SimulationTerminateRequest: 4,
-   ReportRequest: 5,
-   ReportResponse: 6,
-   ControlCommand: 7,
+  GET_REPORT: 0,
+  REPORT: 1,
+  PERFORM_TASK: 2,
+  PERFORM_TASK_RESPONSE: 3,
+  TASK_RESULT: 4,
+  TERMINATE_TASK: 5,
+  TERMINATE_TASK_RESPONSE: 6,
+  PERFORM_COMMAND: 7
 }
 
-module.exports.Id = Id;
+module.exports.Id = Id
 
-module.exports.validate = function ( object ) {
+module.exports.validate = function (pdu) {
+  if (pdu.header.id === undefined) {
+    throw Object({ error: 'validation error', reason: 'pdu id is undefined' })
+  }
 
-   if ( object['Id'] === undefined ) {
-      throw 'Id undefined';
-   }
+  switch (pdu.header.id) {
+    case Id.GET_REPORT:
+      getReport.validate(pdu)
+      break
 
-   switch ( object['Id'] ) {
+    case Id.REPORT:
+      report.validate(pdu)
+      break
 
-      case Id.ResourceRequest:
-         resource_request.validate( object );
-         break;
+    case Id.PERFORM_TASK:
+      performTask.validate(pdu)
+      break
 
-      case Id.ResourceResponse:
-         resource_response.validate( object );
-         break;
+    case Id.PERFORM_TASK_RESPONSE:
+      performTaskResponse.validate(pdu)
+      break
 
-      case Id.SimulationRequest:
-         simulation_request.validate( object );
-         break;
+    case Id.TASK_RESULT:
+      taskResult.validate(pdu)
+      break
 
-      case Id.SimulationResponse:
-         simulation_response.validate( object );
-         break;
+    case Id.TERMINATE_TASK:
+      terminateTask.validate(pdu)
+      break
 
-      case Id.SimulationTerminateRequest:
-         simulation_terminate_request.validate( object );
-         break;
+    case Id.TERMINATE_TASK_RESPONSE:
+      terminateTaskResponse.validate(pdu)
+      break
 
-      case Id.ReportRequest:
-         report_request.validate( object );
-         break;
+    case Id.PERFORM_COMMAND:
+      performCommand.validate(pdu)
+      break
 
-      case Id.ReportResponse:
-         report_response.validate( object );
-         break;
-
-      case Id.ControlCommand:
-         control_command.validate( object );
-         break;
-
-      default:
-         throw 'Invalid Id';
-   }
-
+    default:
+      throw Object({ error: 'validation error', reason: 'pdu id is invalid' })
+  }
 }
 
-const beginTag = '/BEGIN/';
-const endTag = '/END/';
+const BEGIN_TAG = '/BEGIN/'
+const END_TAG = '/END/'
 
-module.exports.encapsulate = function ( packet ) {
+module.exports.encapsulate = function (packet, id) {
+  packet = JSON.stringify(extend(JSON.parse(packet), {
+    header: {
+      id: id,
+      date: new Date(),
+      version: VERSION
+    }
+  }))
 
-   return beginTag + packet + endTag;
+  return BEGIN_TAG + packet + END_TAG
 }
 
-module.exports.expose = function ( packet ) {
+module.exports.expose = function (packet) {
+  var response = {}
 
-   var beginIndex = packet.search( beginTag );
+  var beginIndex = packet.search(BEGIN_TAG)
 
-   if ( beginIndex === -1 ) {
-      throw 'Begin tag not found';
-   }
+  if (beginIndex === -1) {
+    throw Object({ error: 'expose error', reason: 'begin tag was not found' })
+  }
 
-   var endIndex = packet.search( endTag, beginIndex );
+  var endIndex = packet.search(END_TAG, beginIndex)
 
-   if ( endIndex === -1 ) {
-      throw 'End tag not found';
-   }
+  if (endIndex === -1) {
+    throw Object({ error: 'expose error', reason: 'end tag was not found' })
+  }
 
-   return packet.substring( beginIndex + beginTag.length, endIndex );
+  return packet.substring(beginIndex + BEGIN_TAG.length, endIndex)
 }
 
 /*
-   Removes first occurrence of DWP packet
+ * Removes first occurrence of DWP packet
 */
-module.exports.remove = function ( packet ) {
+module.exports.remove = function (packet) {
+  var beginIndex = packet.search(BEGIN_TAG)
 
-   var beginIndex = packet.search( beginTag );
+  if (beginIndex === -1) {
+    throw Object({ error: 'remove error', reason: 'begin tag was not found' })
+  }
 
-   if ( beginIndex === -1 ) {
-      throw 'Begin tag not found';
-   }
+  var endIndex = packet.search(END_TAG, beginIndex)
 
-   var endIndex = packet.search( endTag, beginIndex );
+  if (endIndex === -1) {
+    throw Object({ error: 'remove error', reason: 'end tag was not found' })
+  }
 
-   if ( endIndex === -1 ) {
-      throw 'End tag not found';
-   }
-
-   return packet.replace( packet.substring( beginIndex, endIndex + endTag.length ), '' );
+  return packet.replace(packet.substring(beginIndex, endIndex + END_TAG.length), '')
 }

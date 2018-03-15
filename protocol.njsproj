@@ -32,17 +32,16 @@
     <Folder Include="dwp\pdu\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dwp\common.js" />
     <Compile Include="dwp\factory.js" />
-    <Compile Include="dwp\pdu\control_command.js">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="dwp\pdu\report_request.js" />
-    <Compile Include="dwp\pdu\report_response.js" />
-    <Compile Include="dwp\pdu\resource_request.js" />
-    <Compile Include="dwp\pdu\resource_response.js" />
-    <Compile Include="dwp\pdu\simulation_request.js" />
-    <Compile Include="dwp\pdu\simulation_response.js" />
-    <Compile Include="dwp\pdu\simulation_terminate_request.js" />
+    <Compile Include="dwp\pdu\get_report.js" />
+    <Compile Include="dwp\pdu\perform_command.js" />
+    <Compile Include="dwp\pdu\perform_task.js" />
+    <Compile Include="dwp\pdu\perform_task_response.js" />
+    <Compile Include="dwp\pdu\report.js" />
+    <Compile Include="dwp\pdu\task_result.js" />
+    <Compile Include="dwp\pdu\terminate_task.js" />
+    <Compile Include="dwp\pdu\terminate_task_response.js" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
