@@ -42,6 +42,12 @@ var validate = function validate (data) {
       throw Object({ error: 'validation error', reason: 'tasks is undefined' })
     }
   }
+
+  if (data.flags & Flags.SUPPORTED_LANGUAGES) {
+    if (data.languages === undefined) {
+      throw Object({ error: 'validation error', reason: 'languages is undefined' })
+    }
+  }
 }
 
 var format = function format (data) {
