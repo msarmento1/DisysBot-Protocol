@@ -4,8 +4,8 @@
 //
 /// /////////////////////////////////////////////
 
-const factory = require('../factory');
-const extend = require('util')._extend;
+const factory = require('../factory')
+const extend = require('util')._extend
 
 const validate = (data) => {
   if (data === undefined) {
@@ -32,7 +32,7 @@ const format = (data) => {
 
   const packet = JSON.stringify(pdu);
 
-  return factory.encapsulate(packet, factory.Id.GET_LANGUAGE_SUPPORT);
+  return factory.encapsulate(packet, factory.Id.LANGUAGE_COMMAND);
 }
 
 module.exports = {

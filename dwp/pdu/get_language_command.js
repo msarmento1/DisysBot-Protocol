@@ -15,10 +15,6 @@ const validate = (data) => {
   if (data.name === undefined) {
     throw Object({ error: 'validation error', reason: 'name field is undefined' });
   }
-
-  if (data.command === undefined) {
-    throw Object({ error: 'validation error', reason: 'command field is undefined' });
-  }
 }
 
 const format = (data) => {
@@ -32,7 +28,7 @@ const format = (data) => {
 
   const packet = JSON.stringify(pdu);
 
-  return factory.encapsulate(packet, factory.Id.GET_LANGUAGE_SUPPORT);
+  return factory.encapsulate(packet, factory.Id.GET_LANGUAGE_COMMAND);
 }
 
 module.exports = {

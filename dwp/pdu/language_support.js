@@ -44,7 +44,7 @@ const format = (data) => {
 
   const packet = JSON.stringify(pdu);
 
-  return factory.encapsulate(packet, factory.Id.TASK_RESULT);
+  return factory.encapsulate(packet, factory.Id.LANGUAGE_SUPPORT);
 }
 
 module.exports = {
