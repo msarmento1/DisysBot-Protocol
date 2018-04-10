@@ -12,6 +12,10 @@ const taskResult = require('./pdu/task_result')
 const terminateTask = require('./pdu/terminate_task')
 const terminateTaskResponse = require('./pdu/terminate_task_response')
 const performCommand = require('./pdu/perform_command')
+const getLanguageSupport = require('./pdu/get_language_support')
+const languageSupport = require('./pdu/language_support')
+const getLanguageCommand = require('./pdu/get_language_command')
+const languageCommand = require('./pdu/language_command')
 const extend = require('util')._extend
 
 // Protocol Version
@@ -25,7 +29,11 @@ const Id = {
   TASK_RESULT: 4,
   TERMINATE_TASK: 5,
   TERMINATE_TASK_RESPONSE: 6,
-  PERFORM_COMMAND: 7
+  PERFORM_COMMAND: 7,
+  GET_LANGUAGE_SUPPORT: 8,
+  LANGUAGE_SUPPORT: 9,
+  GET_LANGUAGE_COMMAND: 10,
+  LANGUAGE_COMMAND: 11
 }
 
 module.exports.Id = Id
@@ -66,6 +74,22 @@ module.exports.validate = function (pdu) {
 
     case Id.PERFORM_COMMAND:
       performCommand.validate(pdu)
+      break
+
+    case Id.GET_LANGUAGE_SUPPORT:
+      getLanguageSupport.validate(pdu)
+      break
+
+    case Id.LANGUAGE_SUPPORT:
+      languageSupport.validate(pdu)
+      break
+
+    case Id.GET_LANGUAGE_COMMAND:
+      getLanguageCommand.validate(pdu)
+      break
+
+    case Id.LANGUAGE_COMMAND:
+      languageCommand.validate(pdu)
       break
 
     default:
