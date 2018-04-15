@@ -12,8 +12,8 @@ const validate = (data) => {
     throw Object({ error: 'validation error', reason: 'no data was set' });
   }
 
-  if (data.name === undefined) {
-    throw Object({ error: 'validation error', reason: 'name field is undefined' });
+  if (data.names === undefined) {
+    throw Object({ error: 'validation error', reason: 'names field is undefined' });
   }
 }
 

@@ -12,24 +12,16 @@ const validate = (data) => {
     throw Object({ error: 'validation error', reason: 'no data was set' });
   }
 
-  if (data.language === undefined) {
-    throw Object({ error: 'validation error', reason: 'language field is undefined' });
+  if (data.name === undefined) {
+    throw Object({ error: 'validation error', reason: 'name field is undefined' });
   }
 
-  if (data.language.name === undefined) {
-    throw Object({ error: 'validation error', reason: 'language.name field is undefined' });
+  if (data.allow === undefined) {
+    throw Object({ error: 'validation error', reason: 'allow field is undefined' });
   }
 
-  if (data.language.version === undefined) {
-    throw Object({ error: 'validation error', reason: 'language.version field is undefined' });
-  }
-
-  if (data.language.allow === undefined) {
-    throw Object({ error: 'validation error', reason: 'language.allow field is undefined' });
-  }
-
-  if (data.supports === undefined) {
-    throw Object({ error: 'validation error', reason: 'supports field is undefined' });
+  if (data.allow === true && data.version === undefined) {
+    throw Object({ error: 'validation error', reason: 'version field is undefined' });
   }
 }
 
