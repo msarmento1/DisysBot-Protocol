@@ -12,27 +12,31 @@ const ReturnCode = {
   DENIED: 1
 }
 
-var validate = function validate (data) {
-  if (data === undefined) {
-    throw Object({ error: 'validation error', reason: 'no data was set' })
+const validate = (payload) => {
+  if (payload === undefined) {
+    throw Object({ error: 'validation error', reason: 'payload was not set' })
   }
 
-  if (data.taskId === undefined) {
-    throw Object({ error: 'validation error', reason: 'taskId field is undefined' })
+  if (payload.task === undefined) {
+    throw Object({ error: 'validation error', reason: 'task field is undefined' })
   }
 
-  if (data.code === undefined) {
+  if (payload.task.id === undefined) {
+    throw Object({ error: 'validation error', reason: 'task.id field is undefined' })
+  }
+
+  if (payload.code === undefined) {
     throw Object({ error: 'validation error', reason: 'code field is undefined' })
   }
 }
 
-var format = function format (data) {
-  validate(data)
+const format = (payload) => {
+  validate(payload)
 
   var pdu = {}
 
-  if (data !== undefined) {
-    pdu = extend(pdu, data)
+  if (payload !== undefined) {
+    pdu = extend(pdu, payload)
   }
 
   const packet = JSON.stringify(pdu)
