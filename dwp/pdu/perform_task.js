@@ -7,39 +7,35 @@
 const factory = require('../factory')
 const extend = require('util')._extend
 
-var validate = function validate (data) {
-  if (data === undefined) {
-    throw Object({ error: 'validation error', reason: 'no data was set' })
+var validate = function validate (payload) {
+  if (payload === undefined) {
+    throw Object({ error: 'validation error', reason: 'payload was not set' })
   }
 
-  if (data.taskId === undefined) {
-    throw Object({ error: 'validation error', reason: 'taskId field is undefined' })
+  if (payload.task === undefined) {
+    throw Object({ error: 'validation error', reason: 'task field is undefined' })
   }
 
-  if (data.exec === undefined) {
-    throw Object({ error: 'validation error', reason: 'exec field is undefined' })
+  if (payload.task.id === undefined) {
+    throw Object({ error: 'validation error', reason: 'task.id field is undefined' })
   }
 
-  if (data.exec.file === undefined) {
-    throw Object({ error: 'validation error', reason: 'exec.file field is undefined' })
+  if (payload.commandLine === undefined) {
+    throw Object({ error: 'validation error', reason: 'commandLine field is undefined' })
   }
 
-  if (data.exec.arguments === undefined) {
-    throw Object({ error: 'validation error', reason: 'exec.arguments field is undefined' })
-  }
-
-  if (data.files === undefined) {
+  if (payload.files === undefined) {
     throw Object({ error: 'validation error', reason: 'files field is undefined' })
   }
 }
 
-var format = function format (data) {
-  validate(data)
+var format = function format(payload) {
+  validate(payload)
 
   var pdu = {}
 
-  if (data !== undefined) {
-    pdu = extend(pdu, data)
+  if (payload !== undefined) {
+    pdu = extend(pdu, payload)
   }
 
   const packet = JSON.stringify(pdu)
