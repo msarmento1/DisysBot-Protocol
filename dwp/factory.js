@@ -104,7 +104,7 @@ module.exports.encapsulate = (rawPacket, id) => {
   const packet = JSON.stringify(extend(JSON.parse(rawPacket), {
     header: {
       id,
-      date: new Date(),
+      date: (new Date()).getTime(),
       version: VERSION
     }
   }));
