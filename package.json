@@ -4,7 +4,7 @@
   "description": "Protocol used by the Simulations dispatching manager",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint",
+    "test": "npm run lint && mocha",
     "lint": "esw *.js dwp --color"
   },
   "repository": {
@@ -12,9 +12,11 @@
     "url": "git+https://github.com/comnetunb/protocol.git"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.11.0",
-    "eslint-watch": "^3.1.4"
+    "eslint-watch": "^3.1.4",
+    "mocha": "^5.2.0"
   }
 }
