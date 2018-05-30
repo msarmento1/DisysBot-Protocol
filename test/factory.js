@@ -40,4 +40,43 @@ describe('Unit Tests factory.js', () => {
       expect(factory.expose('/BEGIN/test4/END/')).to.equal('test4');
     });
   });
+
+  describe('remove packet', () => {
+    it('should throw with no begin tag', () => {
+      const errReason = 'begin tag was not found';
+      expect(() => factory.remove('test1/END/')).to.throw()
+        .with.property('reason', errReason);
+
+      expect(() => factory.remove('test2/END/')).to.throw()
+        .with.property('reason', errReason);
+
+      expect(() => factory.remove('test3/END/')).to.throw()
+        .with.property('reason', errReason);
+
+      expect(() => factory.remove('test4/END/')).to.throw()
+        .with.property('reason', errReason);
+    });
+
+    it('should throw with no end tag', () => {
+      const errReason = 'end tag was not found';
+      expect(() => factory.remove('/BEGIN/test1')).to.throw()
+        .with.property('reason', errReason);
+
+      expect(() => factory.remove('/BEGIN/test2')).to.throw()
+        .with.property('reason', errReason);
+
+      expect(() => factory.remove('/BEGIN/test3')).to.throw()
+        .with.property('reason', errReason);
+
+      expect(() => factory.remove('/BEGIN/test4')).to.throw()
+        .with.property('reason', errReason);
+    });
+
+    it('should return with no limit tags', () => {
+      expect(factory.remove('xx/BEGIN/test1/END/')).to.equal('xx');
+      expect(factory.remove('/BEGIN/test2/END/xx')).to.equal('xx');
+      expect(factory.remove('xxx/BEGIN/test3/END/xxx')).to.equal('xxxxxx');
+      expect(factory.remove('/BEGIN/test4/END/')).to.equal('');
+    });
+  });
 });
