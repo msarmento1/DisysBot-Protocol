@@ -1,7 +1,37 @@
-const { expect }  = require('chai');
+const { expect } = require('chai');
 const factory = require('../dwp/factory');
 
 describe('Unit Tests factory.js', () => {
+  describe('protocol ids', () => {
+    it('all protocols have different ids', () => {
+      const ids = {};
+      Object.entries(factory.Id).forEach(([key, value]) => {
+        expect(ids[value]).to.be.undefined;
+        ids[value] = key;
+      });
+    });
+  });
+
+  describe('encapsulate packet', () => {
+    it('it works', () => {
+      const mockPacket = { data: 'ok' };
+      const id = 3;
+      const encapsulated = factory.encapsulate(JSON.stringify(mockPacket), id);
+
+      const beginIndex = encapsulated.search('/BEGIN/');
+      expect(beginIndex).to.not.equal(-1);
+
+      const endIndex = encapsulated.search('/END/', beginIndex);
+      expect(endIndex).to.not.equal(-1);
+
+      const rawPacket = encapsulated.substring(beginIndex + 7, endIndex);
+      const packet = JSON.parse(rawPacket);
+
+      expect(packet.data).to.equal('ok');
+      expect(packet.header.id).to.equal(3);
+    });
+  });
+
   describe('expose packet', () => {
     it('should throw with no begin tag', () => {
       const errReason = 'begin tag was not found';
