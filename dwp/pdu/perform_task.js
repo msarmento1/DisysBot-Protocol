@@ -5,41 +5,32 @@
  */
 
 const factory = require('../factory');
-const extend = require('util')._extend;
 
-const validate = (payload) => {
-  if (payload === undefined) {
-    throw Object({ error: 'validation error', reason: 'payload was not set' });
+const validate = (data) => {
+  if (data === undefined) {
+    throw Object({ error: 'validation error', reason: 'data was not set' });
   }
 
-  if (payload.task === undefined) {
+  if (data.task === undefined) {
     throw Object({ error: 'validation error', reason: 'task field is undefined' });
   }
 
-  if (payload.task.id === undefined) {
+  if (data.task.id === undefined) {
     throw Object({ error: 'validation error', reason: 'task.id field is undefined' });
   }
 
-  if (payload.commandLine === undefined) {
+  if (data.commandLine === undefined) {
     throw Object({ error: 'validation error', reason: 'commandLine field is undefined' });
   }
 
-  if (payload.files === undefined) {
+  if (data.files === undefined) {
     throw Object({ error: 'validation error', reason: 'files field is undefined' });
   }
 };
 
-const format = (payload) => {
-  validate(payload);
-
-  let pdu = {};
-
-  if (payload !== undefined) {
-    pdu = extend(pdu, payload);
-  }
-
-  const packet = JSON.stringify(pdu);
-
+const format = (data) => {
+  validate(data);
+  const packet = JSON.stringify(data);
   return factory.encapsulate(packet, factory.Id.PERFORM_TASK);
 };
 
