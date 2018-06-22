@@ -12,8 +12,12 @@ const validate = (data) => {
     throw Object({ error: 'validation error', reason: 'no data was set' });
   }
 
-  if (data.languages === undefined || !Array.isArray(data.languages)) {
-    throw Object({ error: 'validation error', reason: 'languages fields is invalid' });
+  if (data.languages === undefined) {
+    throw Object({ error: 'validation error', reason: 'languages fields is undefined' });
+  }
+
+  if (!Array.isArray(data.languages)) {
+    throw Object({ error: 'validation error', reason: 'languages fields is not an array' });
   }
 
   const { length } = data.languages;
