@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 
 const factory = require('../../dwp/factory');
+const formattedData = require('./formattedData');
 
 const performTask = require('../../dwp/pdu/perform_task');
 const performTaskResponse = require('../../dwp/pdu/perform_task_response');
@@ -14,30 +15,27 @@ describe('performTask and performTaskResponse', () => {
       commandLine: 'ls',
       files: ['ABC', 'DEF'],
     };
-    const formattedData = JSON.parse(factory.expose(performTask.format(data)));
-    expect(formattedData).to.deep.include(data);
-    expect(formattedData.header).to.include({
+    const fData = formattedData(performTask, data);
+    expect(fData).to.deep.include(data);
+    expect(fData.header).to.include({
       id: factory.Id.PERFORM_TASK
     });
   });
 
   it('performTask correctly throws with invalid objects', () => {
-    const formattedData = (data) => {
-      JSON.parse(factory.expose(performTask.format(data)));
-    };
     const data = {};
-    expect(() => formattedData(undefined)).to.throw()
+    expect(() => formattedData(performTask, undefined)).to.throw()
       .with.property('reason', 'no data was set');
-    expect(() => formattedData(data)).to.throw()
+    expect(() => formattedData(performTask, data)).to.throw()
       .with.property('reason', 'task field is undefined');
     data.task = {};
-    expect(() => formattedData(data)).to.throw()
+    expect(() => formattedData(performTask, data)).to.throw()
       .with.property('reason', 'task.id field is undefined');
     data.task.id = 1;
-    expect(() => formattedData(data)).to.throw()
+    expect(() => formattedData(performTask, data)).to.throw()
       .with.property('reason', 'commandLine field is undefined');
     data.commandLine = 'ls';
-    expect(() => formattedData(data)).to.throw()
+    expect(() => formattedData(performTask, data)).to.throw()
       .with.property('reason', 'files field is undefined');
   });
 
@@ -48,27 +46,24 @@ describe('performTask and performTaskResponse', () => {
       },
       code: 'ls',
     };
-    const formattedData = JSON.parse(factory.expose(performTaskResponse.format(data)));
-    expect(formattedData).to.deep.include(data);
-    expect(formattedData.header).to.include({
+    const fData = formattedData(performTaskResponse, data);
+    expect(fData).to.deep.include(data);
+    expect(fData.header).to.include({
       id: factory.Id.PERFORM_TASK_RESPONSE
     });
   });
 
   it('performTaskResponse correctly throws with invalid objects', () => {
-    const formattedData = (data) => {
-      JSON.parse(factory.expose(performTaskResponse.format(data)));
-    };
     const data = {};
-    expect(() => formattedData(undefined)).to.throw()
+    expect(() => formattedData(performTaskResponse, undefined)).to.throw()
       .with.property('reason', 'no data was set');
-    expect(() => formattedData(data)).to.throw()
+    expect(() => formattedData(performTaskResponse, data)).to.throw()
       .with.property('reason', 'task field is undefined');
     data.task = {};
-    expect(() => formattedData(data)).to.throw()
+    expect(() => formattedData(performTaskResponse, data)).to.throw()
       .with.property('reason', 'task.id field is undefined');
     data.task.id = 1;
-    expect(() => formattedData(data)).to.throw()
+    expect(() => formattedData(performTaskResponse, data)).to.throw()
       .with.property('reason', 'code field is undefined');
   });
 });
