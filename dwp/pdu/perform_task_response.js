@@ -13,7 +13,7 @@ const ReturnCode = {
 
 const validate = (data) => {
   if (data === undefined) {
-    throw Object({ error: 'validation error', reason: 'data was not set' });
+    throw Object({ error: 'validation error', reason: 'no data was set' });
   }
 
   if (data.task === undefined) {
