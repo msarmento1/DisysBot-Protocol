@@ -20,6 +20,11 @@ const validate = (data) => {
   if (data.command === undefined) {
     throw Object({ error: 'validation error', reason: 'command field is undefined' });
   }
+
+  const cmd = data.command;
+  if (cmd !== Command.RESUME && cmd !== Command.PAUSE && cmd !== Command.STOP) {
+    throw Object({ error: 'validation error', reason: 'command field has an invalid value' });
+  }
 };
 
 const format = (data) => {
