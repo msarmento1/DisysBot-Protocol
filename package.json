@@ -4,8 +4,8 @@
   "description": "Protocol used by the Simulations dispatching manager",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && mocha test/ --recursive -c ",
-    "lint": "esw *.js dwp --color"
+    "test": "npm run lint && nyc mocha test/ --recursive -c ",
+    "lint": "esw *.js dwp test --color"
   },
   "repository": {
     "type": "git",

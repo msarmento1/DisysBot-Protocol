@@ -5,8 +5,7 @@
  */
 
 const factory = require('../factory');
-const extend = require('util')._extend;
-const { Flags } = require('../common');
+const { Flags, WorkerState } = require('../common');
 
 const validate = (data) => {
   if (data === undefined) {
@@ -14,7 +13,7 @@ const validate = (data) => {
   }
 
   if (data.flags === undefined) {
-    throw Object({ error: 'validation error', reason: 'reportData field is undefined' });
+    throw Object({ error: 'validation error', reason: 'flags field is undefined' });
   }
 
   if (data.flags & Flags.RESOURCE) {
@@ -35,6 +34,10 @@ const validate = (data) => {
     if (data.state === undefined) {
       throw Object({ error: 'validation error', reason: 'state is undefined' });
     }
+
+    if (data.state !== WorkerState.EXECUTING && data.state !== WorkerState.PAUSED) {
+      throw Object({ error: 'validation error', reason: 'state is not valid' });
+    }
   }
 
   if (data.flags & Flags.TASKS) {
@@ -52,15 +55,7 @@ const validate = (data) => {
 
 const format = (data) => {
   validate(data);
-
-  let pdu = {};
-
-  if (data !== undefined) {
-    pdu = extend(pdu, data);
-  }
-
-  const packet = JSON.stringify(pdu);
-
+  const packet = JSON.stringify(data);
   return factory.encapsulate(packet, factory.Id.REPORT);
 };
 
