@@ -16,7 +16,7 @@ const validate = (data) => {
   }
 
   if (typeof data.flags !== 'number' || isNaN(data.flags)) { // eslint-disable-line
-    throw Object({ error: 'validation error', reason: 'flags field is not a number' });
+    throw Object({ error: 'validation error', reason: `flags field is not a number, but ${data.flags}` });
   }
 };
 

@@ -13,11 +13,11 @@ const validate = (data) => {
   }
 
   if (data.names === undefined) {
-    throw Object({ error: 'validation error', reason: 'names fields is undefined' });
+    throw Object({ error: 'validation error', reason: 'names field is undefined' });
   }
 
   if (!Array.isArray(data.names)) {
-    throw Object({ error: 'validation error', reason: 'names fields is not an array' });
+    throw Object({ error: 'validation error', reason: 'names field is not an array' });
   }
 };
 

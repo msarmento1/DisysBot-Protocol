@@ -25,10 +25,10 @@ describe('languageCommand and getLanguageCommand', () => {
     expect(() => formattedData(undefined)).to.throw()
       .with.property('reason', 'no data was set');
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'names fields is undefined');
+      .with.property('reason', 'names field is undefined');
     data.names = 'Test';
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'names fields is not an array');
+      .with.property('reason', 'names field is not an array');
   });
 
   it('languageCommand is correctly validated and encapsulated', () => {
@@ -52,10 +52,10 @@ describe('languageCommand and getLanguageCommand', () => {
     expect(() => formattedData(undefined)).to.throw()
       .with.property('reason', 'no data was set');
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'languages fields is undefined');
+      .with.property('reason', 'languages field is undefined');
     data.languages = 'Test';
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'languages fields is not an array');
+      .with.property('reason', 'languages field is not an array');
     data.languages = data.languagexs;
     expect(() => formattedData(data)).to.throw()
       .with.property('reason', 'name field of a language is undefined');

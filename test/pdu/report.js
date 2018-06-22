@@ -30,7 +30,7 @@ describe('report and getReport', () => {
       .with.property('reason', 'flags field is undefined');
     data.flags = 'Test';
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'flags field is not a number');
+      .with.property('reason', `flags field is not a number, but ${data.flags}`);
   });
 
   it('report is correctly validated and encapsulated', () => {
@@ -80,25 +80,25 @@ describe('report and getReport', () => {
       .with.property('reason', 'flags field is undefined');
     data.flags = correctData.flags;
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'resource is undefined');
+      .with.property('reason', 'resource field is undefined with RESOURCE flag set');
     data.resource = {};
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'cpu field is undefined');
+      .with.property('reason', 'resource.cpu field is undefined');
     data.resource.cpu = 30;
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'memory field is undefined');
+      .with.property('reason', 'resource.memory field is undefined');
     data.resource.memory = 30;
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'state is undefined');
+      .with.property('reason', 'state field is undefined with STATE flag set');
     data.state = 32132;
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'state is not valid');
+      .with.property('reason', `state field has an invalid ${data.state} value`);
     data.state = correctData.state;
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'tasks is undefined');
+      .with.property('reason', 'tasks field is undefined with TASKS flag set');
     data.tasks = correctData.tasks;
     expect(() => formattedData(data)).to.throw()
-      .with.property('reason', 'languages is undefined');
+      .with.property('reason', 'languages field is undefined with SUPPORTED_LANGUAGES set');
     data.languages = correctData.languages;
     expect(() => formattedData(data)).to.not.throw();
   });
