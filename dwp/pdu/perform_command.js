@@ -5,7 +5,6 @@
  */
 
 const factory = require('../factory');
-const extend = require('util')._extend;
 
 const Command = {
   RESUME: 0,
@@ -21,19 +20,16 @@ const validate = (data) => {
   if (data.command === undefined) {
     throw Object({ error: 'validation error', reason: 'command field is undefined' });
   }
+
+  const cmd = data.command;
+  if (cmd !== Command.RESUME && cmd !== Command.PAUSE && cmd !== Command.STOP) {
+    throw Object({ error: 'validation error', reason: 'command field has an invalid value' });
+  }
 };
 
 const format = (data) => {
   validate(data);
-
-  let pdu = {};
-
-  if (data !== undefined) {
-    pdu = extend(pdu, data);
-  }
-
-  const packet = JSON.stringify(pdu);
-
+  const packet = JSON.stringify(data);
   return factory.encapsulate(packet, factory.Id.PERFORM_COMMAND);
 };
 

@@ -5,15 +5,18 @@
  */
 
 const factory = require('../factory');
-const extend = require('util')._extend;
 
 const validate = (data) => {
   if (data === undefined) {
     throw Object({ error: 'validation error', reason: 'no data was set' });
   }
 
-  if (data.languages === undefined || !Array.isArray(data.languages)) {
-    throw Object({ error: 'validation error', reason: 'languages fields is invalid' });
+  if (data.languages === undefined) {
+    throw Object({ error: 'validation error', reason: 'languages field is undefined' });
+  }
+
+  if (!Array.isArray(data.languages)) {
+    throw Object({ error: 'validation error', reason: 'languages field is not an array' });
   }
 
   const { length } = data.languages;
@@ -28,15 +31,7 @@ const validate = (data) => {
 
 const format = (data) => {
   validate(data);
-
-  let pdu = {};
-
-  if (data !== undefined) {
-    pdu = extend(pdu, data);
-  }
-
-  const packet = JSON.stringify(pdu);
-
+  const packet = JSON.stringify(data);
   return factory.encapsulate(packet, factory.Id.LANGUAGE_COMMAND);
 };
 

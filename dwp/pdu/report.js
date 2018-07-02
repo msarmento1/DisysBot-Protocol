@@ -5,8 +5,7 @@
  */
 
 const factory = require('../factory');
-const extend = require('util')._extend;
-const { Flags } = require('../common');
+const { Flags, WorkerState } = require('../common');
 
 const validate = (data) => {
   if (data === undefined) {
@@ -14,53 +13,49 @@ const validate = (data) => {
   }
 
   if (data.flags === undefined) {
-    throw Object({ error: 'validation error', reason: 'reportData field is undefined' });
+    throw Object({ error: 'validation error', reason: 'flags field is undefined' });
   }
 
   if (data.flags & Flags.RESOURCE) {
     if (data.resource === undefined) {
-      throw Object({ error: 'validation error', reason: 'resource is undefined' });
+      throw Object({ error: 'validation error', reason: 'resource field is undefined with RESOURCE flag set' });
     }
 
     if (data.resource.cpu === undefined) {
-      throw Object({ error: 'validation error', reason: 'cpu field is undefined' });
+      throw Object({ error: 'validation error', reason: 'resource.cpu field is undefined' });
     }
 
     if (data.resource.memory === undefined) {
-      throw Object({ error: 'validation error', reason: 'memory field is undefined' });
+      throw Object({ error: 'validation error', reason: 'resource.memory field is undefined' });
     }
   }
 
   if (data.flags & Flags.STATE) {
     if (data.state === undefined) {
-      throw Object({ error: 'validation error', reason: 'state is undefined' });
+      throw Object({ error: 'validation error', reason: 'state field is undefined with STATE flag set' });
+    }
+
+    if (data.state !== WorkerState.EXECUTING && data.state !== WorkerState.PAUSED) {
+      throw Object({ error: 'validation error', reason: `state field has an invalid ${data.state} value` });
     }
   }
 
   if (data.flags & Flags.TASKS) {
     if (data.tasks === undefined) {
-      throw Object({ error: 'validation error', reason: 'tasks is undefined' });
+      throw Object({ error: 'validation error', reason: 'tasks field is undefined with TASKS flag set' });
     }
   }
 
   if (data.flags & Flags.SUPPORTED_LANGUAGES) {
     if (data.languages === undefined) {
-      throw Object({ error: 'validation error', reason: 'languages is undefined' });
+      throw Object({ error: 'validation error', reason: 'languages field is undefined with SUPPORTED_LANGUAGES set' });
     }
   }
 };
 
 const format = (data) => {
   validate(data);
-
-  let pdu = {};
-
-  if (data !== undefined) {
-    pdu = extend(pdu, data);
-  }
-
-  const packet = JSON.stringify(pdu);
-
+  const packet = JSON.stringify(data);
   return factory.encapsulate(packet, factory.Id.REPORT);
 };
 

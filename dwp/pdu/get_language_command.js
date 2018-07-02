@@ -5,7 +5,6 @@
  */
 
 const factory = require('../factory');
-const extend = require('util')._extend;
 
 const validate = (data) => {
   if (data === undefined) {
@@ -15,19 +14,15 @@ const validate = (data) => {
   if (data.names === undefined) {
     throw Object({ error: 'validation error', reason: 'names field is undefined' });
   }
+
+  if (!Array.isArray(data.names)) {
+    throw Object({ error: 'validation error', reason: 'names field is not an array' });
+  }
 };
 
 const format = (data) => {
   validate(data);
-
-  let pdu = {};
-
-  if (data !== undefined) {
-    pdu = extend(pdu, data);
-  }
-
-  const packet = JSON.stringify(pdu);
-
+  const packet = JSON.stringify(data);
   return factory.encapsulate(packet, factory.Id.GET_LANGUAGE_COMMAND);
 };
 

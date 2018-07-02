@@ -5,7 +5,6 @@
  */
 
 const factory = require('../factory');
-const extend = require('util')._extend;
 
 const validate = (data) => {
   if (data === undefined) {
@@ -23,15 +22,7 @@ const validate = (data) => {
 
 const format = (data) => {
   validate(data);
-
-  let pdu = {};
-
-  if (data !== undefined) {
-    pdu = extend(pdu, data);
-  }
-
-  const packet = JSON.stringify(pdu);
-
+  const packet = JSON.stringify(data);
   return factory.encapsulate(packet, factory.Id.TERMINATE_TASK_RESPONSE);
 };
 
