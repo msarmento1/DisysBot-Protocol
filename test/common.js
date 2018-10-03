@@ -12,9 +12,9 @@ describe('Unit Tests common.js', () => {
     });
   });
 
-  describe('worker state', () => {
+  describe('slave state', () => {
     it('executed and paused have different values', () => {
-      const state = common.WorkerState;
+      const state = common.SlaveState;
       expect(state.EXECUTING).to.not.equal(state.PAUSED);
     });
   });

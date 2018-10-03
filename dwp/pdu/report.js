@@ -5,7 +5,7 @@
  */
 
 const factory = require('../factory');
-const { Flags, WorkerState } = require('../common');
+const { Flags, SlaveState } = require('../common');
 
 const validate = (data) => {
   if (data === undefined) {
@@ -35,7 +35,7 @@ const validate = (data) => {
       throw Object({ error: 'validation error', reason: 'state field is undefined with STATE flag set' });
     }
 
-    if (data.state !== WorkerState.EXECUTING && data.state !== WorkerState.PAUSED) {
+    if (data.state !== SlaveState.EXECUTING && data.state !== SlaveState.PAUSED) {
       throw Object({ error: 'validation error', reason: `state field has an invalid ${data.state} value` });
     }
   }
