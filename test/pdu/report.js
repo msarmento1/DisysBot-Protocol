@@ -40,7 +40,7 @@ describe('report and getReport', () => {
         cpu: 30,
         memory: 30,
       },
-      state: common.WorkerState.EXECUTING,
+      state: common.SlaveState.EXECUTING,
       tasks: [{}],
       languages: ['Python'],
     };
@@ -69,7 +69,7 @@ describe('report and getReport', () => {
         cpu: 30,
         memory: 30,
       },
-      state: common.WorkerState.EXECUTING,
+      state: common.SlaveState.EXECUTING,
       tasks: [{}],
       languages: ['Python'],
     };
